@@ -25,6 +25,8 @@ PFont font;
 
 int pantallaActual = 0; //Variable de pantalla
 boolean isButtonPressed = false;
+boolean mostrarCreditos = false;
+
 
 void setup() {
   size(600, 600);
@@ -89,7 +91,13 @@ void draw() {
       textAlign(CENTER, CENTER);
       fill(0);
       text("Jugar", width/2, height/2 + 15);
+       fill(255);
+      rect(width/2 - 50, height/2 + 50, 100, 30);
+      fill(0);
+      textAlign(CENTER, CENTER);
+      text("Créditos", width/2, height/2 + 65);
       break;
+     
     case 1:
       image(imagenRicitos, 0, 0);
       textSize(16);
@@ -392,7 +400,25 @@ void draw() {
         fill(0, 255, 0);
       } else {
         fill(255);
-      }
+      } 
+      fill(255);
+      rect(width/2 - 50, height/2 + 50, 100, 30);
+      fill(0);
+      textAlign(CENTER, CENTER);
+      text("Créditos", width/2, height/2 + 65);
+      break;
+      
+     case 17: // Agregar caso para la pantalla de créditos
+      background(0); // Fondo negro para los créditos
+      fill(255);
+      textAlign(CENTER, CENTER);
+      textSize(20);
+      text("Créditos:", width/2, height/2 - 40);
+      textSize(16);
+      text("Desarrollado por [Tomas Pomar]", width/2, height/2);
+      text("Basado en la historia de Ricitos de Oro", width/2, height/2 + 30);
+      textSize(14);
+      text("Presiona cualquier tecla para regresar", width/2, height - 50);
       break;
   }
 }
@@ -401,6 +427,11 @@ void mousePressed() {
   if (pantallaActual == 0 && mouseX > width/2 - 50 && mouseX < width/2 + 50 && mouseY > height/2 && mouseY < height/2 + 30) {
     isButtonPressed = true;
     pantallaActual = 1;
+  }
+  
+  if (pantallaActual == 0 && mouseX > width/2 - 50 && mouseX < width/2 + 50 && mouseY > height/2 + 50 && mouseY < height/2 + 80) {
+    isButtonPressed = true;
+    pantallaActual = 17; // Cambiar a una pantalla nueva para los créditos
   }
 
   if (pantallaActual == 1 && mouseX > (width/2 - 50) && mouseX < (width/2 + 50) && mouseY > (height/2 + 50) && mouseY < (height/2 + 80)) {
@@ -485,6 +516,12 @@ void mousePressed() {
 void controlarHistoria() {
   switch (pantallaActual) {
     case 0:
+    float distanciaJugar = dist(mouseX, mouseY, width/2, height/2);
+      if (distanciaJugar < 15) {
+        isButtonPressed = true;
+         mostrarCreditos = true; 
+        pantallaActual = 1;
+        }
       break;
 
     case 1:
@@ -539,4 +576,16 @@ void controlarHistoria() {
 
 void keyPressed() {
   controlarHistoria();
+  
+  if (pantallaActual == 17) {
+    pantallaActual = 0;
+  }
+  
+  if (mostrarCreditos) {
+    mostrarCreditos = false;
+  }
+}
+
+float remap(float value, float start1, float stop1, float start2, float stop2) {
+  return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
 }
